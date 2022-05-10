@@ -1,0 +1,12 @@
+# ============================================================================ #
+# Author: Tancredi-Paul Grozav <paul@grozav.info>
+# ============================================================================ #
+
+# NPM installed modules.
+node_modules
+
+# build directory with TypeScript compiled code + bundle of dependencies.
+build
+
+# Anything else?
+# ============================================================================ #

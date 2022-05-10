@@ -117,6 +117,7 @@ function build()
     --tty \
     ${build_container_name} \
     /bin/sh -c "
+      apk add bash &&
       cd /app &&
       ./manage.sh --build-inside
     " \
@@ -134,6 +135,7 @@ function build()
 function build-inside()
 {
   echo "NPM install & list ..." &&
+  npm install --global babylonjs &&
   npm install &&
   npm list &&
 

@@ -118,19 +118,24 @@ function build()
     ${build_container_name} \
     /bin/sh -c "
       cd /app &&
+      echo \"NPM install & list ...\" &&
       npm install &&
       npm list &&
-      npx tsc \
-        --outDir /app/build \
-        &&
-      browserify \
-        /app/build/app.js \
-        -o /app/build/bundle.js \
-        &&
-      cp \
-        /app/index.html \
-        /app/build/index.html \
-        &&
+
+      echo \"Compiling TypeScript ...\" &&
+      npx tsc --outDir /app/build &&
+      echo \"tsc.ec=\${?}\" &&
+
+      echo \"Bundling ...\" &&
+      browserify /app/build/app.js -o /app/build/bundle.js &&
+      echo \"browserify.ec=\${?}\" &&
+
+      echo \"Remove intermediar build files ...\" &&
+      rm -f /app/build/app.js /app/build/package.json &&
+
+      echo \"Deploy html file ...\" &&
+      cp /app/src/index.html /app/build/index.html &&
+
       true
     " \
   &&
@@ -160,6 +165,19 @@ function rm-env()
 # ============================================================================ #
 
 # ============================================================================ #
+# Attach to the build environment.
+# ============================================================================ #
+function attach-env()
+{
+  ${cmgr} \
+    exec \
+    -it \
+    ${build_container_name} \
+    /bin/sh
+} &&
+# ============================================================================ #
+
+# ============================================================================ #
 
 
 
@@ -173,6 +191,7 @@ function print_help()
   echo "Usage:
   --build               Build the app.
   --rm-env              Remove build environment.
+  --attach-env          Attach to the build environment.
   anything-else         Print this help menu." &&
   true
 } &&
@@ -198,6 +217,7 @@ if [ ${first_param} ]; then
   case "${first_param}" in
     --build) ${first_param#--} ${@} ; exit_code=${?} ;;
     --rm-env) ${first_param#--} ${@} ; exit_code=${?} ;;
+    --attach-env) ${first_param#--} ${@} ; exit_code=${?} ;;
     *) print_help ; exit_code=0 ;;
   esac
 fi &&

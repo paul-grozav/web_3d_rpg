@@ -137,7 +137,7 @@ function build-inside()
 {
   echo "NPM install & list ..." &&
   npm install --global browserify &&
-  npm install --global babylonjs &&
+#  npm install --global babylonjs &&
   npm install &&
   npm list &&
 

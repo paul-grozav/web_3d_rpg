@@ -2,71 +2,40 @@
 // Author: Tancredi-Paul Grozav <paul@grozav.info>
 // -------------------------------------------------------------------------- //
 // -------------------------------------------------------------------------- //
-// import { Engine, Scene } from "babylonjs";
 import * as BABYLON from "babylonjs";
-import * as BABYLON_GUI from "babylonjs-gui";
-
+import {Playground} from "./Playground";
+import * as Stats from "stats.js";
+// -------------------------------------------------------------------------- //
 document.body.style.overflow = "hidden";
 document.body.style.margin = "0px";
-let canvas:HTMLCanvasElement = document.createElement("canvas");
+let canvas: HTMLCanvasElement = document.createElement("canvas");
 canvas.style.width = "100%";
 canvas.style.height = "100%";
 document.body.appendChild(canvas);
-let engine:BABYLON.Engine = new BABYLON.Engine(canvas, true);
-let create_scene = function(canvas:HTMLCanvasElement, engine:BABYLON.Engine):BABYLON.Scene {
-  // This creates a basic Babylon Scene object (non-mesh)
-  let scene:BABYLON.Scene = new BABYLON.Scene(engine);
-
-  // This creates and positions a free camera (non-mesh)
-  let camera:BABYLON.FreeCamera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 5, -10), scene);
-
-  // This targets the camera to scene origin
-  camera.setTarget(BABYLON.Vector3.Zero());
-
-  // This attaches the camera to the canvas
-  camera.attachControl(canvas, true);
-
-  // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-  let light:BABYLON.HemisphericLight = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(0, 1, 0), scene);
-
-  // Default intensity is 1. Let's dim the light a small amount
-  light.intensity = 0.7;
-
-  // Our built-in 'sphere' shape.
-  let sphere:BABYLON.Mesh = BABYLON.MeshBuilder.CreateSphere("sphere", {diameter: 2, segments: 32}, scene);
-
-  // Move the sphere upward 1/2 its height
-  sphere.position.y = 1;
-
-  // Our built-in 'ground' shape.
-  let ground:BABYLON.Mesh = BABYLON.MeshBuilder.CreateGround("ground", {width: 6, height: 6}, scene);
-
-  // GUI
-  let advancedTexture = BABYLON_GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
-
-  let button1 = BABYLON_GUI.Button.CreateSimpleButton("but1", "Click Me");
-  button1.width = "150px"
-  button1.height = "40px";
-  button1.color = "white";
-  button1.cornerRadius = 20;
-  button1.background = "green";
-  button1.onPointerUpObservable.add(function() {
-    alert("you did it!");
-  });
-  advancedTexture.addControl(button1);
-
-  return scene;
-};
-let scene:BABYLON.Scene = create_scene(canvas, engine);
+// -------------------------------------------------------------------------- //
+var stats_mb = new Stats();
+stats_mb.showPanel( 2 );
+document.body.appendChild( stats_mb.dom );
+// function animate() {
+// 	stats_mb.begin();
+// 	// monitored code goes here
+// 	stats_mb.end();
+// 	requestAnimationFrame( animate );
+// }
+// requestAnimationFrame( animate );
+// -------------------------------------------------------------------------- //
+let engine: BABYLON.Engine = new BABYLON.Engine(canvas, true);
+let scene:BABYLON.Scene = Playground.create_scene(engine, canvas);
+// enable debugger / inspector
+// scene.debugLayer.show({
+//   initialTab: 2
+// });
 engine.runRenderLoop(function() {
+	stats_mb.begin();
   scene.render();
+	stats_mb.end();
 });
 // -------------------------------------------------------------------------- //
 let message: string = "Hello, World of TS!";
 console.log(message);
-// create a new heading 1 element
-//let heading = document.createElement("h1");
-//heading.textContent = message;
-// add the heading the document
-//document.body.appendChild(heading);
 // -------------------------------------------------------------------------- //

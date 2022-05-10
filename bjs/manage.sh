@@ -127,11 +127,12 @@ function build()
       echo \"tsc.ec=\${?}\" &&
 
       echo \"Bundling ...\" &&
-      browserify /app/build/app.js -o /app/build/bundle.js &&
+      browserify --debug /app/build/app.js -o /app/build/bundle.js &&
       echo \"browserify.ec=\${?}\" &&
 
       echo \"Remove intermediar build files ...\" &&
-      rm -f /app/build/app.js /app/build/package.json &&
+      rm -f /app/build/app.js /app/build/package.json \
+        /app/build/Playground.js &&
 
       echo \"Deploy html file ...\" &&
       cp /app/src/index.html /app/build/index.html &&

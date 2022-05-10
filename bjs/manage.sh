@@ -118,30 +118,38 @@ function build()
     ${build_container_name} \
     /bin/sh -c "
       cd /app &&
-      echo \"NPM install & list ...\" &&
-      npm install &&
-      npm list &&
-
-      echo \"Compiling TypeScript ...\" &&
-      npx tsc --outDir /app/build &&
-      echo \"tsc.ec=\${?}\" &&
-
-      echo \"Bundling ...\" &&
-      browserify --debug /app/build/app.js -o /app/build/bundle.js &&
-      echo \"browserify.ec=\${?}\" &&
-
-      echo \"Remove intermediar build files ...\" &&
-      rm -f /app/build/app.js /app/build/package.json \
-        /app/build/Playground.js &&
-
-      echo \"Deploy html file ...\" &&
-      cp /app/src/index.html /app/build/index.html &&
-
-      true
+      ./manage.sh --build-inside
     " \
   &&
 
   echo "Done" &&
+
+  true
+} &&
+# ============================================================================ #
+
+# ============================================================================ #
+# Build the app inside node.js container.
+# ============================================================================ #
+function build-inside()
+{
+  echo "NPM install & list ..." &&
+  npm install &&
+  npm list &&
+
+  echo "Compiling TypeScript ..." &&
+  npx tsc --outDir /app/build &&
+  echo "tsc.ec=${?}" &&
+
+  echo "Bundling ..." &&
+  browserify --debug /app/build/app.js -o /app/build/bundle.js &&
+  echo "browserify.ec=${?}" &&
+
+  echo "Remove intermediar build files ..." &&
+  rm -f /app/build/app.js /app/build/package.json /app/build/Playground.js &&
+
+  echo "Deploy html file ..." &&
+  cp /app/src/index.html /app/build/index.html &&
 
   true
 } &&
@@ -191,6 +199,7 @@ function print_help()
 {
   echo "Usage:
   --build               Build the app.
+  --build-inside        Build the app.
   --rm-env              Remove build environment.
   --attach-env          Attach to the build environment.
   anything-else         Print this help menu." &&
@@ -217,6 +226,7 @@ exit_code=0 &&
 if [ ${first_param} ]; then
   case "${first_param}" in
     --build) ${first_param#--} ${@} ; exit_code=${?} ;;
+    --build-inside) ${first_param#--} ${@} ; exit_code=${?} ;;
     --rm-env) ${first_param#--} ${@} ; exit_code=${?} ;;
     --attach-env) ${first_param#--} ${@} ; exit_code=${?} ;;
     *) print_help ; exit_code=0 ;;

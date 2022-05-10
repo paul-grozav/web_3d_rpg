@@ -142,19 +142,19 @@ function build-inside()
   npm list &&
 
   echo "Compiling TypeScript ..." &&
-  npx tsc --outDir /app/build &&
+  npx tsc --outDir ${script_dir}/build &&
   echo "tsc.ec=${?}" &&
 
   echo "Bundling ..." &&
-#  browserify /app/build/app.js -o /app/build/bundle.js &&
+#  browserify ${script_dir}/build/app.js -o ${script_dir}/build/bundle.js &&
   npm run bundle &&
   echo "browserify.ec=${?}" &&
 
   echo "Remove intermediar build files ..." &&
-  rm -f /app/build/app.js /app/build/package.json /app/build/Playground.js &&
+  rm -f ${script_dir}/build/app.js ${script_dir}/build/package.json ${script_dir}/build/Playground.js &&
 
   echo "Deploy html file ..." &&
-  cp /app/src/index.html /app/build/index.html &&
+  cp ${script_dir}/src/index.html ${script_dir}/build/index.html &&
 
   true
 } &&

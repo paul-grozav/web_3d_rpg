@@ -135,7 +135,7 @@ function build()
 function build-inside()
 {
   echo "NPM install & list ..." &&
-  npm install --global babylonjs &&
+  npm install --global browserify &&
   npm install &&
   npm list &&
 
@@ -144,7 +144,7 @@ function build-inside()
   echo "tsc.ec=${?}" &&
 
   echo "Bundling ..." &&
-  npx browserify --debug /app/build/app.js -o /app/build/bundle.js &&
+  browserify /app/build/app.js -o /app/build/bundle.js &&
   echo "browserify.ec=${?}" &&
 
   echo "Remove intermediar build files ..." &&

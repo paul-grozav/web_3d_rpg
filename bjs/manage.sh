@@ -16,6 +16,7 @@ should_debug=1 && # Uncomment to enable debugging
 script_dir="$( cd $( dirname ${0} ) && pwd )" &&
 build_container_name="typescript_compiler" &&
 cmgr="/opt/docker/docker" &&
+cmgr="docker" &&
 # ============================================================================ #
 
 
@@ -144,7 +145,8 @@ function build-inside()
   echo "tsc.ec=${?}" &&
 
   echo "Bundling ..." &&
-  browserify /app/build/app.js -o /app/build/bundle.js &&
+#  browserify /app/build/app.js -o /app/build/bundle.js &&
+  npm run bundle &&
   echo "browserify.ec=${?}" &&
 
   echo "Remove intermediar build files ..." &&

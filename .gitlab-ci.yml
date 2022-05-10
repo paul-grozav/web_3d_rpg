@@ -7,14 +7,18 @@ build-job:
   image: docker.io/node:18.1.0-alpine3.15
   script:
   - /bin/sh -c "ls -la && pwd && cd bjs && ls -la && apk add bash && ./manage.sh --build-inside"
+  artifacts:
+    paths:
+    - bjs/build
+    expire_in: 1 hour
 
 pages:
   stage: deploy
   needs:
   - build-job
   script:
-  - pwd 
+  - mv bjs/build public
   artifacts:
     paths:
-    - bjs/build/
+    - public
     expire_in: 1 hour

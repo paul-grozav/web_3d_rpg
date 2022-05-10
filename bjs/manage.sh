@@ -142,7 +142,7 @@ function build-inside()
   echo "tsc.ec=${?}" &&
 
   echo "Bundling ..." &&
-  browserify --debug /app/build/app.js -o /app/build/bundle.js &&
+  npx browserify --debug /app/build/app.js -o /app/build/bundle.js &&
   echo "browserify.ec=${?}" &&
 
   echo "Remove intermediar build files ..." &&

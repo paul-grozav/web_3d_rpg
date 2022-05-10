@@ -11,10 +11,10 @@ build-job:
 pages:
   stage: deploy
   needs:
-    - build-job
-  # script:
-  #   - 
+  - build-job
+  script:
+  - pwd 
   artifacts:
     paths:
-      - bjs/build/
+    - bjs/build/
     expire_in: 1 hour

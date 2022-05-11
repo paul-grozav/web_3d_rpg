@@ -1,7 +1,6 @@
 // -------------------------------------------------------------------------- //
 // Author: Tancredi-Paul Grozav <paul@grozav.info>
 // -------------------------------------------------------------------------- //
-// -------------------------------------------------------------------------- //
 import * as BABYLON from "babylonjs";
 import {Playground} from "./Playground";
 import * as Stats from "stats.js";
@@ -36,6 +35,6 @@ engine.runRenderLoop(function() {
 	stats_mb.end();
 });
 // -------------------------------------------------------------------------- //
-let message: string = "Hello, World of TS!";
+let message: string = "Hello, from TypeScript!";
 console.log(message);
 // -------------------------------------------------------------------------- //

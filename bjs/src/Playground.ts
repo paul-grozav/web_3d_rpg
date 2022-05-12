@@ -10,6 +10,17 @@ import * as Cannon from "cannon";
 export class Playground
 {
 // -------------------------------------------------------------------------- //
+  constructor()
+  {
+    console.log("Playground::constructor(): Playground created.");
+  }
+// -------------------------------------------------------------------------- //
+  public run(): void
+  {
+    console.log("Playground::run(): Playground running...");
+    alert("running");
+  }
+// -------------------------------------------------------------------------- //
   public static create_scene(engine: BABYLON.Engine,
     canvas: HTMLCanvasElement): BABYLON.Scene
   {

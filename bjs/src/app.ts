@@ -23,6 +23,9 @@ document.body.appendChild( stats_mb.dom );
 // }
 // requestAnimationFrame( animate );
 // -------------------------------------------------------------------------- //
+let pg:Playground = new Playground();
+pg.run();
+
 let engine: BABYLON.Engine = new BABYLON.Engine(canvas, true);
 let scene:BABYLON.Scene = Playground.create_scene(engine, canvas);
 // enable debugger / inspector

@@ -139,7 +139,9 @@ function build-inside()
   npm list &&
 
   echo "Compiling TypeScript ..." &&
-  npx tsc --outDir ${script_dir}/build &&
+  npx tsc \
+    --outDir ${script_dir}/build \
+    &&
   echo "tsc.ec=${?}" &&
 
   echo "Bundling ..." &&
@@ -148,6 +150,8 @@ function build-inside()
 
   echo "Remove intermediar build files ..." &&
   find ${script_dir}/build \
+    -mindepth 1 \
+    -maxdepth 1 \
     -type f \
     -not -name index.html \
     -and -not -name bundle.js \

@@ -1,7 +1,7 @@
 // -------------------------------------------------------------------------- //
 // Author: Tancredi-Paul Grozav <paul@grozav.info>
 // -------------------------------------------------------------------------- //
-import {web_3d_rpg} from "./web_3d_rpg/App";
+import {App} from "./web_3d_rpg/App";
 import * as Stats from "stats.js";
 // -------------------------------------------------------------------------- //
 document.body.style.overflow = "hidden";
@@ -18,7 +18,7 @@ document.body.appendChild( stats_mb.dom );
 // }
 // requestAnimationFrame( animate );
 // -------------------------------------------------------------------------- //
-const a:web_3d_rpg.App = new web_3d_rpg.App();
+const a:App = new App();
 a.run();
 // -------------------------------------------------------------------------- //
 let message:string = "Hello, from TypeScript!";

@@ -1,21 +1,18 @@
 // -------------------------------------------------------------------------- //
 // Author: Tancredi-Paul Grozav <paul@grozav.info>
 // -------------------------------------------------------------------------- //
-import {Engine, Scene, Vector3, CannonJSPlugin, ArcRotateCamera,
-  HemisphericLight, Mesh, MeshBuilder, PhysicsImpostor, StandardMaterial,
-  Color3}
+import {Engine, Scene, Vector3, CannonJSPlugin, ArcRotateCamera}
   from "babylonjs";
-import * as BABYLON_GUI from "babylonjs-gui";
+// import * as BABYLON_GUI from "babylonjs-gui";
 import * as Cannon from "cannon";
+import {Environment} from "./Environment"
+import {Player} from "./Player"
 // -------------------------------------------------------------------------- //
-export namespace web_3d_rpg
-{
-export class App
-{
+export class App {
 // -------------------------------------------------------------------------- //
-  private canvas: HTMLCanvasElement;
-  private engine: Engine;
-  private scene: Scene;
+  private canvas:HTMLCanvasElement;
+  private engine:Engine;
+  private scene:Scene;
   // enum State { START = 0, GAME = 1, LOSE = 2, CUTSCENE = 3 };
 // -------------------------------------------------------------------------- //
   constructor() {
@@ -32,44 +29,18 @@ export class App
   }
 // -------------------------------------------------------------------------- //
   public run(): void {
-    this.setup_canvas();
     this.setup_document_event_listeners();
+    this.setup_canvas();
 
     // Enable physics
     this.scene.enablePhysics(new Vector3(0,-10,0),
       new CannonJSPlugin(true, 10, Cannon));
 
-    // This creates and positions a free camera (non-mesh)
-    // const camera: FreeCamera = new FreeCamera("camera1",
-    //   new Vector3(0, 5, -10), scene);
-    const camera: ArcRotateCamera =
-      new ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 10,
-      new Vector3(0, 0, 0));
+    let environment:Environment = new Environment(this.scene);
+    environment.create();
 
-    // This targets the camera to scene origin
-    camera.setTarget(Vector3.Zero());
-
-    // This attaches the camera to the canvas
-    camera.attachControl(this.canvas, true);
-
-    // This creates a light, aiming 0,1,0 - to the sky (non-mesh)
-    const light: HemisphericLight = new HemisphericLight(
-      "light", new Vector3(0, 1, 0), this.scene);
-
-    // Default intensity is 1. Let's dim the light a small amount
-    light.intensity = 0.7;
-
-    // Our built-in 'ground' shape.
-    const ground: Mesh = MeshBuilder.CreateGround("ground",
-      {width: 6, height: 6}, this.scene);
-    ground.physicsImpostor = new PhysicsImpostor(ground,
-      PhysicsImpostor.BoxImpostor, { mass: 0, friction: 0.5,
-      restitution: 0.7 }, this.scene);
-
-    const ground_material: StandardMaterial =
-      new StandardMaterial("ground_material", this.scene);
-    ground_material.diffuseColor = Color3.Green();
-    ground.material = ground_material;
+    let player:Player = new Player(this.scene);
+    player.create();
 
     // this.add_sphere(scene);
 
@@ -261,5 +232,4 @@ export class App
   // }
 // -------------------------------------------------------------------------- //
 } // end class
-} // end namespace
 // -------------------------------------------------------------------------- //

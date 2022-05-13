@@ -120,6 +120,10 @@ export class App {
     this.canvas.focus(); // focus it when added to the screen.
     // resize the engine, to update the resolution once the canvas was sized.
     this.engine.resize();
+
+    // stop context menu showing on canvas right click
+    this.canvas.addEventListener("contextmenu", (e) => { e.preventDefault();});
+
     console.log("App::create_canvas(): Done setting up the canvas.");
   }
 // -------------------------------------------------------------------------- //

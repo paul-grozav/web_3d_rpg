@@ -1,6 +1,14 @@
 // -------------------------------------------------------------------------- //
 // Author: Tancredi-Paul Grozav <paul@grozav.info>
 // -------------------------------------------------------------------------- //
+//     ^ Y
+//     |
+//     |
+//     +-------> X
+//    /
+//   /
+//  v Z
+// -------------------------------------------------------------------------- //
 import {Scene, Vector3, HemisphericLight, Mesh, MeshBuilder, PhysicsImpostor,
   StandardMaterial, Color3}
   from "babylonjs";

@@ -143,6 +143,8 @@ export class player {
       track.push(walk(0, 47))
       this.scene.onBeforeRenderObservable.add(() => {
         dude.movePOV(ic.horizontal*step, 0, ic.vertical*step);
+        camera.position.z = 0;
+        camera.beta = 1.5;
         // distance += step;
         // if (distance > track[p].dist) {
         //   dude.rotate(Axis.Y, Tools.ToRadians(track[p].turn), Space.LOCAL);

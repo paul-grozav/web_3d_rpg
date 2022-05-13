@@ -1,12 +1,11 @@
 // -------------------------------------------------------------------------- //
 // Author: Tancredi-Paul Grozav <paul@grozav.info>
 // -------------------------------------------------------------------------- //
-import {Engine, Scene, Vector3, CannonJSPlugin, ArcRotateCamera}
-  from "babylonjs";
+import {Engine, Scene, Vector3, CannonJSPlugin} from "babylonjs";
 // import * as BABYLON_GUI from "babylonjs-gui";
 import * as Cannon from "cannon";
 import {Environment} from "./Environment"
-import {Player} from "./Player"
+import {player} from "./player"
 // -------------------------------------------------------------------------- //
 export class App {
 // -------------------------------------------------------------------------- //
@@ -39,8 +38,8 @@ export class App {
     let environment:Environment = new Environment(this.scene);
     environment.create();
 
-    let player:Player = new Player(this.scene);
-    player.create();
+    let p:player = new player(this.scene);
+    p.create();
 
     // this.add_sphere(scene);
 
@@ -118,6 +117,7 @@ export class App {
     this.canvas.style.width = "100%";
     this.canvas.style.height = "100%";
     document.body.appendChild(this.canvas);
+    this.canvas.focus(); // focus it when added to the screen.
     // resize the engine, to update the resolution once the canvas was sized.
     this.engine.resize();
     console.log("App::create_canvas(): Done setting up the canvas.");

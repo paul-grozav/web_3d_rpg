@@ -27,7 +27,7 @@ export class Environment {
 
     // Our built-in 'ground' shape.
     const ground: Mesh = MeshBuilder.CreateGround("ground",
-      {width: 6, height: 6}, this.scene);
+      {width: 50, height: 50}, this.scene);
     ground.physicsImpostor = new PhysicsImpostor(ground,
       PhysicsImpostor.BoxImpostor, { mass: 0, friction: 0.5,
       restitution: 0.7 }, this.scene);

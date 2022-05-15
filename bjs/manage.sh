@@ -57,6 +57,7 @@ function create_build_container()
     --name ${build_container_name} \
     --volume ${script_dir}:/app:rw \
     --entrypoint /bin/sh \
+    -p 0.0.0.0:1026:8080 \
     docker.io/node:18.1.0-alpine3.15 \
     -c "
       cd /app &&

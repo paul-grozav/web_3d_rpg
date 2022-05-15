@@ -1,14 +1,20 @@
+// -------------------------------------------------------------------------- //
+// Author: Tancredi-Paul Grozav <paul@grozav.info>
+// -------------------------------------------------------------------------- //
 {
   "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./build",
+    "sourceMap": true,
+    // "noImplicitAny": true,
+    "module": "CommonJS",
+    // "moduleResolution": "node",
     "target": "ES6",
+    "strict": true,
     "lib": [
       "es2020",
       "DOM"
-    ],
-    "module": "CommonJS",
-    // "moduleResolution": "node",
-    "outDir": "./build",
-    "rootDir": "./src",
-    "strict": true
+    ]
   }
 }
+// -------------------------------------------------------------------------- //

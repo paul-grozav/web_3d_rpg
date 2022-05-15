@@ -17,7 +17,7 @@ import {Scene, Vector3, MeshBuilder, FreeCamera, ArcRotateCamera,
   SceneLoader,
   Axis,
   Tools,
-  Space}
+  Space, Color3}
   from "babylonjs";
 import {input_controller} from "./input_controller"
 // -------------------------------------------------------------------------- //
@@ -45,7 +45,7 @@ export class player {
     //   new ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 10,
     //   new Vector3(0, 0, 0));
 
-    const camera = new ArcRotateCamera("camera", 1.1242, 1.1969, 150, new Vector3(0, 60, 2));
+    const camera = new ArcRotateCamera("camera", 1/2 * Math.PI, Math.PI*3/10, 10, new Vector3(0, 0, 0));
     camera.upperBetaLimit = Math.PI / 2.2;
     camera.position.z = 0;
 
@@ -66,8 +66,6 @@ export class player {
     // wire_mat.wireframe = true;
     const collision_box = MeshBuilder.CreateBox("collision_box", { width: 2,
       depth: 2, height: 2 }, this.scene);
-    collision_box.isVisible = true;
-    // collision_box.isPickable = false;
     // collision_box.checkCollisions = true;
     // collision_box.material = wire_mat;
     // collision_box.position.y = 10;
@@ -77,6 +75,20 @@ export class player {
     console.log("player::create(): Creating input controller.");
     let ic:input_controller = new input_controller(this.scene);
     ic.create();
+
+    const player_mat = new StandardMaterial("player_material");
+    player_mat.diffuseColor = Color3.Red();
+    const player = MeshBuilder.CreateBox("player", { width: 2,
+      depth: 2, height: 2 }, this.scene);
+    player.position.x = 3;
+    player.material = player_mat;
+    camera.parent = player;
+    this.scene.registerBeforeRender(() => {
+      const step:number = 0.030;
+      player.movePOV(0, 0, ic.vertical*step);
+      player.rotation.y += ic.horizontal*0.01;
+      camera.rotation.y += ic.horizontal*0.01;
+    });
 
     // this.scene.registerBeforeRender(() => {
     //   physics_root.moveWithCollisions(new Vector3(ic.horizontal, 0,
@@ -106,58 +118,58 @@ export class player {
 
 
 
-    SceneLoader.ImportMeshAsync("him", "https://raw.githubusercontent.com/BabylonJS/MeshesLibrary/master/Dude/", "dude.babylon", this.scene).then((result) => {
-      var dude = result.meshes[0];
-      dude.scaling = new Vector3(0.008, 0.008, 0.008);
+    // SceneLoader.ImportMeshAsync("him", "https://raw.githubusercontent.com/BabylonJS/MeshesLibrary/master/Dude/", "dude.babylon", this.scene).then((result) => {
+    //   var dude = result.meshes[0];
+    //   dude.scaling = new Vector3(0.008, 0.008, 0.008);
           
-      dude.position = new Vector3(-6, 0, 0);
-      dude.rotate(Axis.Y, Tools.ToRadians(-95), Space.LOCAL);
-      const startRotation = dude.rotationQuaternion!.clone();    
+    //   dude.position = new Vector3(-6, 0, 0);
+    //   dude.rotate(Axis.Y, Tools.ToRadians(-95), Space.LOCAL);
+    //   const startRotation = dude.rotationQuaternion!.clone();    
 
-      camera.parent = dude;
-      this.scene.beginAnimation(result.skeletons[0], 0, 100, true, 1.0);
+    //   camera.parent = dude;
+    //   this.scene.beginAnimation(result.skeletons[0], 0, 100, true, 1.0);
 
-      let distance = 10;
-      let step = 0.015;
-      let p = 0;
+    //   let distance = 10;
+    //   let step = 0.015;
+    //   let p = 0;
 
-      interface walk{
-        turn:number,
-        dist:number
-      };
-      function walk(turn:number, dist:number): walk {
-        return {
-          turn: turn,
-          dist: dist
-        };
-      };
-      const track:walk[] = [];
-      track.push(walk(86, 7));
-      track.push(walk(-85, 14.8));
-      track.push(walk(-93, 16.5));
-      track.push(walk(48, 25.5));
-      track.push(walk(-112, 30.5));
-      track.push(walk(-72, 33.2));
-      track.push(walk(42, 37.5));
-      track.push(walk(-98, 45.2));
-      track.push(walk(0, 47))
-      this.scene.onBeforeRenderObservable.add(() => {
-        dude.movePOV(ic.horizontal*step, 0, ic.vertical*step);
-        camera.position.z = 0;
-        camera.beta = 1.5;
-        // distance += step;
-        // if (distance > track[p].dist) {
-        //   dude.rotate(Axis.Y, Tools.ToRadians(track[p].turn), Space.LOCAL);
-        //   p +=1;
-        //   p %= track.length; 
-        //   if (p === 0) {
-        //     distance = 0;
-        //     dude.position = new Vector3(-6, 0, 0);
-        //     dude.rotationQuaternion = startRotation.clone();
-        //   }
-        // }
-      })
-    });
+    //   interface walk{
+    //     turn:number,
+    //     dist:number
+    //   };
+    //   function walk(turn:number, dist:number): walk {
+    //     return {
+    //       turn: turn,
+    //       dist: dist
+    //     };
+    //   };
+    //   const track:walk[] = [];
+    //   track.push(walk(86, 7));
+    //   track.push(walk(-85, 14.8));
+    //   track.push(walk(-93, 16.5));
+    //   track.push(walk(48, 25.5));
+    //   track.push(walk(-112, 30.5));
+    //   track.push(walk(-72, 33.2));
+    //   track.push(walk(42, 37.5));
+    //   track.push(walk(-98, 45.2));
+    //   track.push(walk(0, 47))
+    //   this.scene.onBeforeRenderObservable.add(() => {
+    //     dude.movePOV(ic.horizontal*step, 0, ic.vertical*step);
+    //     camera.position.z = 0;
+    //     camera.beta = 1.5;
+    //     // distance += step;
+    //     // if (distance > track[p].dist) {
+    //     //   dude.rotate(Axis.Y, Tools.ToRadians(track[p].turn), Space.LOCAL);
+    //     //   p +=1;
+    //     //   p %= track.length; 
+    //     //   if (p === 0) {
+    //     //     distance = 0;
+    //     //     dude.position = new Vector3(-6, 0, 0);
+    //     //     dude.rotationQuaternion = startRotation.clone();
+    //     //   }
+    //     // }
+    //   })
+    // });
 
     console.log("player::create(): Created.");
   }

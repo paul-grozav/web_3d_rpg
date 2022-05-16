@@ -52,23 +52,30 @@ export class player {
     // This targets the camera to scene origin
     // camera.setTarget(Vector3.Zero());
     // This attaches the camera to the canvas
-    // camera.attachControl(this.scene.getEngine().getRenderingCanvas(), true);
+    camera.attachControl(this.scene.getEngine().getRenderingCanvas(), true);
+    // Allow moving by mouse, and zooming, but disable keyboard camera rotation.
+    // we'll use keyboard for character movement.
+    camera.inputs.removeByType("ArcRotateCameraKeyboardMoveInput");
 
-    console.log("player::create(): Creating player ...");
-    // Our built-in 'sphere' shape.
+    console.log("player::create(): Creating some tmp object around the player"
+      + " ...");
+    // Our built-in player'sphere' shape.
     const sphere:Mesh = MeshBuilder.CreateSphere("sphere",
       {diameter: 2, segments: 32}, this.scene);
     // Move the sphere upward 1/2 its height
     sphere.position.y = 1;
+    sphere.position.x = 7;
+    sphere.checkCollisions = true;
 
     //collision mesh
     // const wire_mat = new StandardMaterial("wire_material");
     // wire_mat.wireframe = true;
     const collision_box = MeshBuilder.CreateBox("collision_box", { width: 2,
-      depth: 2, height: 2 }, this.scene);
-    // collision_box.checkCollisions = true;
+      depth: 2, height: 1 }, this.scene);
+    collision_box.checkCollisions = true;
     // collision_box.material = wire_mat;
-    // collision_box.position.y = 10;
+    collision_box.position.z = -5;
+    collision_box.position.y = 0.5;
     // const physics_root = this.make_physics_object(collision_box, this.scene,
     //   0.2);
 
@@ -76,28 +83,32 @@ export class player {
     let ic:input_controller = new input_controller(this.scene);
     ic.create();
 
+    console.log("player::create(): Creating player ...");
     const player_mat = new StandardMaterial("player_material");
-    player_mat.diffuseColor = Color3.Red();
+    player_mat.diffuseColor = Color3.Blue();
     const player = MeshBuilder.CreateBox("player", { width: 2,
       depth: 2, height: 2 }, this.scene);
+    player.position.y = 1;
     player.position.x = 3;
+    const player_arrow = MeshBuilder.CreateCylinder("player_ahead_arrow",
+      { diameterTop: 0, diameterBottom: 0.5, height: 0.5 }, this.scene);
+    player_arrow.position.y = 0.75;
+    player_arrow.position.z = -1.25;
+    player_arrow.rotation.x = -Math.PI/2;
+    player_arrow.parent = player;
+    player_arrow.checkCollisions = true;
     player.material = player_mat;
     camera.parent = player;
+    player.checkCollisions = true;
     this.scene.registerBeforeRender(() => {
-      const step:number = 0.030;
-      player.movePOV(0, 0, ic.vertical*step);
-      player.rotation.y += ic.horizontal*0.01;
-      camera.rotation.y += ic.horizontal*0.01;
-    });
-
-    // this.scene.registerBeforeRender(() => {
-    //   physics_root.moveWithCollisions(new Vector3(ic.horizontal, 0,
-    //     ic.vertical));
-    //   // Set camera behind player and a bit above
-    //   // camera.position = physics_root.position.clone();
-    //   // camera.position.z -= 6;
-    //   // camera.position.y += 3;
-    // });
+      const position_step:number = 0.03;
+      const rotation_step:number = 0.015;
+      // player.movePOV(0, 0, ic.vertical*position_step); // moves without collision
+      player.rotation.y += ic.horizontal*rotation_step;
+      const move_x:number = -1 * Math.cos(player.rotation.y) * ic.vertical*position_step;
+      const move_z:number = -1 * Math.sin(player.rotation.y) * ic.vertical*position_step;
+      player.moveWithCollisions(new Vector3(move_z, 0, move_x));
+});
 
 
 

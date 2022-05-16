@@ -139,29 +139,24 @@ function build-inside()
   npm install &&
   npm list &&
 
-  echo "Compiling TypeScript ..." &&
-  npx tsc \
-    --outDir ${script_dir}/build \
-    &&
-  echo "tsc.ec=${?}" &&
-
-  echo "Bundling ..." &&
-  npx browserify ${script_dir}/build/main.js -o ${script_dir}/build/bundle.js &&
-  echo "browserify.ec=${?}" &&
+  echo "Compiling TypeScript and bundling ..." &&
+  npm run bundle &&
+  echo "bundle.ec=${?}" &&
 
   echo "Remove intermediar build files ..." &&
+  # Removed these to delete other files/folders from the build dir
+#    -maxdepth 1 \
+#    -type f \
   find ${script_dir}/build \
     -mindepth 1 \
-    -maxdepth 1 \
-    -type f \
     -not -name index.html \
     -and -not -name bundle.js \
     -print0 | xargs -0  -I {} rm -vrf {} \
     &&
 
-
   echo "Deploy html file ..." &&
   cp ${script_dir}/src/index.html ${script_dir}/build/index.html &&
+  cp ${script_dir}/tmp_models/model.glb ${script_dir}/build/ &&
 
   true
 } &&
@@ -194,7 +189,28 @@ function attach-env()
     exec \
     -it \
     ${build_container_name} \
-    /bin/sh
+    /bin/sh \
+    -c "
+      cd /app &&
+      sh
+    "
+} &&
+# ============================================================================ #
+
+# ============================================================================ #
+# Watch/rebuild and serve web app.
+# ============================================================================ #
+function start()
+{
+  ${cmgr} \
+    exec \
+    -it \
+    ${build_container_name} \
+    /bin/sh \
+    -c "
+      cd /app &&
+      npm run start
+    "
 } &&
 # ============================================================================ #
 
@@ -214,6 +230,7 @@ function print_help()
   --build-inside        Build the app.
   --rm-env              Remove build environment.
   --attach-env          Attach to the build environment.
+  --start               Watch/rebuild and serve web app.
   anything-else         Print this help menu." &&
   true
 } &&
@@ -241,6 +258,7 @@ if [ ${first_param} ]; then
     --build-inside) ${first_param#--} ${@} ; exit_code=${?} ;;
     --rm-env) ${first_param#--} ${@} ; exit_code=${?} ;;
     --attach-env) ${first_param#--} ${@} ; exit_code=${?} ;;
+    --start) ${first_param#--} ${@} ; exit_code=${?} ;;
     *) print_help ; exit_code=0 ;;
   esac
 fi &&

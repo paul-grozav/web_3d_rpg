@@ -12,6 +12,7 @@
 //   code duration, etc.
 // - babylonjs - The BabylonJS 3D rendering and gaming enging.
 // - babylonjs-gui - showing buttons in the game interface.
+// - babylonjs-loaders - load glTF models.
 // - cannon, @types/cannon - JavaScript physics engine - usable with BabylonJS.
 // - live-server - Serve the web app within a live server. Attracts 3 high
 //   severity vulnerabilities.

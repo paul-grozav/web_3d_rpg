@@ -10,8 +10,10 @@
 //  v Z
 // -------------------------------------------------------------------------- //
 import {Scene, Vector3, HemisphericLight, Mesh, MeshBuilder, PhysicsImpostor,
-  StandardMaterial, Color3}
+  StandardMaterial, Color3, Color4, AxesViewer, SceneLoader}
   from "babylonjs";
+// import "@babylonjs/loaders/glTF";
+import "babylonjs-loaders";
 // -------------------------------------------------------------------------- //
 export class Environment {
 // -------------------------------------------------------------------------- //
@@ -33,17 +35,27 @@ export class Environment {
     // Default intensity is 1. Let's dim the light a small amount
     light.intensity = 0.7;
 
-    // Our built-in 'ground' shape.
-    const ground: Mesh = MeshBuilder.CreateGround("ground",
-      {width: 50, height: 50}, this.scene);
-    ground.physicsImpostor = new PhysicsImpostor(ground,
-      PhysicsImpostor.BoxImpostor, { mass: 0, friction: 0.5,
-      restitution: 0.7 }, this.scene);
+    // Set sky color
+    this.scene.clearColor = Color4.FromHexString("#00BCFF");
 
-    const ground_material: StandardMaterial =
-      new StandardMaterial("ground_material", this.scene);
-    ground_material.diffuseColor = Color3.Green();
-    ground.material = ground_material;
+    // Our built-in 'ground' shape.
+    // const ground_material: StandardMaterial =
+    //   new StandardMaterial("ground_material", this.scene);
+    // ground_material.diffuseColor = Color3.Green();
+
+    // const ground: Mesh = MeshBuilder.CreateGround("ground",
+    //   {width: 5000, height: 5000}, this.scene);
+    // ground.physicsImpostor = new PhysicsImpostor(ground,
+    //   PhysicsImpostor.BoxImpostor, { mass: 0, friction: 0.5,
+    //   restitution: 0.7 }, this.scene);
+    // ground.material = ground_material;
+
+    new AxesViewer(this.scene, 5);
+
+
+    // Append glTF model to scene.
+    // SceneLoader.Append("", "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DragonAttenuation/glTF-Binary/DragonAttenuation.glb", this.scene, function (scene) {});
+    SceneLoader.Append("", "model.glb", this.scene, function (scene) {});
 
     console.log("Environment::create(): Created.");
   }

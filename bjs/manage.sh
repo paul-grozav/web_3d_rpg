@@ -156,7 +156,7 @@ function build-inside()
 
   echo "Deploy html file ..." &&
   cp ${script_dir}/src/index.html ${script_dir}/build/index.html &&
-  cp ${script_dir}/tmp_models/model.glb ${script_dir}/build/ &&
+#  cp ${script_dir}/tmp_models/model.glb ${script_dir}/build/ &&
 
   true
 } &&

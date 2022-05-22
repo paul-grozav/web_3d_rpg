@@ -101,13 +101,14 @@ export class player {
     camera.parent = player;
     player.checkCollisions = true;
     this.scene.registerBeforeRender(() => {
-      const position_step:number = 0.03;
+      const position_step:number = 3;
       const rotation_step:number = 0.015;
       // player.movePOV(0, 0, ic.vertical*position_step); // moves without collision
       player.rotation.y += ic.horizontal*rotation_step;
       const move_x:number = -1 * Math.cos(player.rotation.y) * ic.vertical*position_step;
       const move_z:number = -1 * Math.sin(player.rotation.y) * ic.vertical*position_step;
       player.moveWithCollisions(new Vector3(move_z, 0, move_x));
+      player.position.y = 0;
 });
 
 

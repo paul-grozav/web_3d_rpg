@@ -4,10 +4,10 @@
 import {Engine, Scene, Vector3, CannonJSPlugin} from "babylonjs";
 // import * as BABYLON_GUI from "babylonjs-gui";
 import * as Cannon from "cannon";
-import {Environment} from "./Environment"
+import {environment} from "./environment"
 import {player} from "./player"
 // -------------------------------------------------------------------------- //
-export class App {
+export class app {
 // -------------------------------------------------------------------------- //
   private canvas:HTMLCanvasElement;
   private engine:Engine;
@@ -35,8 +35,8 @@ export class App {
     this.scene.enablePhysics(new Vector3(0,-10,0),
       new CannonJSPlugin(true, 10, Cannon));
 
-    let environment:Environment = new Environment(this.scene);
-    environment.create();
+    let env:environment = new environment(this.scene);
+    env.create();
 
     let p:player = new player(this.scene);
     p.create();

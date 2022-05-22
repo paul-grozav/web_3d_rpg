@@ -15,7 +15,7 @@ import {Scene, Vector3, HemisphericLight, Mesh, MeshBuilder, PhysicsImpostor,
 // import "@babylonjs/loaders/glTF";
 import "babylonjs-loaders";
 // -------------------------------------------------------------------------- //
-export class Environment {
+export class environment {
 // -------------------------------------------------------------------------- //
   private scene:Scene;
 // -------------------------------------------------------------------------- //

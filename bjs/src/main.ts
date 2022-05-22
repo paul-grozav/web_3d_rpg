@@ -17,7 +17,7 @@
 // - live-server - Serve the web app within a live server. Attracts 3 high
 //   severity vulnerabilities.
 // -------------------------------------------------------------------------- //
-import {App} from "./web_3d_rpg/App";
+import {app} from "./web_3d_rpg/app";
 import * as Stats from "stats.js";
 // -------------------------------------------------------------------------- //
 document.body.style.overflow = "hidden";
@@ -34,7 +34,7 @@ document.body.appendChild( stats_mb.dom );
 // }
 // requestAnimationFrame( animate );
 // -------------------------------------------------------------------------- //
-const a:App = new App();
+const a:app = new app();
 a.run();
 // -------------------------------------------------------------------------- //
 let message:string = "Hello, from TypeScript!";

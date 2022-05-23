@@ -40,5 +40,6 @@ a.run();
 let message:string = "Hello, from TypeScript!";
 console.log(message);
 // -------------------------------------------------------------------------- //
-// Look into using TypeDoc as a documentation generator
+// 1. Look into using TypeDoc as a documentation generator
+// 2. Maybe use SVG textures?
 // -------------------------------------------------------------------------- //

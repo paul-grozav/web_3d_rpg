@@ -10,7 +10,7 @@
 //  v Z
 // -------------------------------------------------------------------------- //
 import {Scene, Vector3, HemisphericLight, Mesh, MeshBuilder, PhysicsImpostor,
-  StandardMaterial, Color3, Color4, AxesViewer, SceneLoader}
+  StandardMaterial, Color3, Color4, AxesViewer, SceneLoader, AbstractMesh}
   from "babylonjs";
 // import "@babylonjs/loaders/glTF";
 import "babylonjs-loaders";
@@ -55,7 +55,12 @@ export class environment {
 
     // Append glTF model to scene.
     // SceneLoader.Append("", "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DragonAttenuation/glTF-Binary/DragonAttenuation.glb", this.scene, function (scene) {});
-    SceneLoader.Append("", "model.glb", this.scene, function (scene) {});
+    SceneLoader.Append("", "model.glb", this.scene, function (scene) {
+      const ground:AbstractMesh = scene.getMeshByName("Plane")!;
+      ground.checkCollisions = true;
+      ground.scaling.x = 0.1;
+      ground.scaling.z = 0.1;
+    });
 
     console.log("Environment::create(): Created.");
   }

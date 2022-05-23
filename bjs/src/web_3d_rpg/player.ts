@@ -17,7 +17,7 @@ import {Scene, Vector3, MeshBuilder, FreeCamera, ArcRotateCamera,
   SceneLoader,
   Axis,
   Tools,
-  Space, Color3}
+  Space, Color3, Scalar}
   from "babylonjs";
 import {input_controller} from "./input_controller"
 // -------------------------------------------------------------------------- //
@@ -89,7 +89,8 @@ export class player {
     const player = MeshBuilder.CreateBox("player", { width: 2,
       depth: 2, height: 2 }, this.scene);
     player.position.y = 1;
-    player.position.x = 3;
+    player.position.x = 0;
+    player.position.z = 0;
     const player_arrow = MeshBuilder.CreateCylinder("player_ahead_arrow",
       { diameterTop: 0, diameterBottom: 0.5, height: 0.5 }, this.scene);
     player_arrow.position.y = 0.75;
@@ -100,15 +101,31 @@ export class player {
     player.material = player_mat;
     camera.parent = player;
     player.checkCollisions = true;
+    let jump_force = 0;
     this.scene.registerBeforeRender(() => {
-      const position_step:number = 3;
+      const position_step:number = 0.3;
       const rotation_step:number = 0.015;
+      // Gravity direction points to -Y axis (thus, -1 *)
+      const gravity_force:number = -1 * 9.80665/5;
       // player.movePOV(0, 0, ic.vertical*position_step); // moves without collision
       player.rotation.y += ic.horizontal*rotation_step;
       const move_x:number = -1 * Math.cos(player.rotation.y) * ic.vertical*position_step;
       const move_z:number = -1 * Math.sin(player.rotation.y) * ic.vertical*position_step;
-      player.moveWithCollisions(new Vector3(move_z, 0, move_x));
-      player.position.y = 0;
+      if(ic.is_jump_pressed && Math.round(player.position.y) == 1) {
+        jump_force = -1 * gravity_force + 0.2;
+      }
+      jump_force -= 0.01;
+      if(jump_force < 0){
+        jump_force = 0;
+      }
+      let move_y:number = gravity_force + jump_force;
+      // console.log("move_y=" + move_y);
+      // console.log("player.position.y=" + player.position.y);
+      // console.log("jump_force=" + jump_force);
+      player.moveWithCollisions(new Vector3(move_z, move_y, move_x));
+      if(player.position.y < 1){
+        player.position.y = 1;
+      }
 });
 
 

@@ -55,11 +55,11 @@ export class environment {
 
     // Append glTF model to scene.
     // SceneLoader.Append("", "https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/DragonAttenuation/glTF-Binary/DragonAttenuation.glb", this.scene, function (scene) {});
-    SceneLoader.Append("", "model.glb", this.scene, function (scene) {
+    SceneLoader.Append("", "ground.glb", this.scene, function (scene) {
       const ground:AbstractMesh = scene.getMeshByName("Plane")!;
       ground.checkCollisions = true;
-      ground.scaling.x = 0.1;
-      ground.scaling.z = 0.1;
+      ground.scaling.x = 0.15;
+      ground.scaling.z = 0.15;
     });
 
     console.log("Environment::create(): Created.");

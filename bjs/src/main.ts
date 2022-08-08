@@ -18,14 +18,14 @@
 //   severity vulnerabilities.
 // -------------------------------------------------------------------------- //
 import {app} from "./web_3d_rpg/app";
-import * as Stats from "stats.js";
+// import * as Stats from "stats.js";
 // -------------------------------------------------------------------------- //
 document.body.style.overflow = "hidden";
 document.body.style.margin = "0px";
 // -------------------------------------------------------------------------- //
-var stats_mb = new Stats();
-stats_mb.showPanel( 2 );
-document.body.appendChild( stats_mb.dom );
+// var stats_mb = new Stats();
+// stats_mb.showPanel( 2 );
+// document.body.appendChild( stats_mb.dom );
 // function animate() {
 // 	stats_mb.begin();
 // 	// monitored code goes here
@@ -52,4 +52,6 @@ console.log(message);
 //     3.2.3. https://www.youtube.com/watch?v=qVBpNhzhmsA
 //     3.2.4. https://forum.babylonjs.com/t/slavs-slavian-mmorpg-game/717
 //   3.3. MMORPG basic: https://www.youtube.com/watch?v=Z006PdLv-0M
+//   4. World of Warcraft:
+//     4.1. Character movement: https://youtu.be/L9D1V6oKzac?t=3631
 // -------------------------------------------------------------------------- //

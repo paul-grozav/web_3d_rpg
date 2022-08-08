@@ -6,6 +6,7 @@ import {Engine, Scene, Vector3, CannonJSPlugin} from "babylonjs";
 import * as Cannon from "cannon";
 import {environment} from "./environment"
 import {player} from "./player"
+import {ui} from "./ui"
 // -------------------------------------------------------------------------- //
 export class app {
 // -------------------------------------------------------------------------- //
@@ -15,7 +16,7 @@ export class app {
   // enum State { START = 0, GAME = 1, LOSE = 2, CUTSCENE = 3 };
 // -------------------------------------------------------------------------- //
   constructor() {
-    console.log("App::constructor(): Constructing ...");
+    console.log("app::constructor(): Constructing ...");
     this.canvas = document.createElement("canvas");
 
     // This creates the rendering engine, which will render it's output on the
@@ -24,21 +25,25 @@ export class app {
 
     // This creates a basic Babylon Scene object (non-mesh)
     this.scene = new Scene(this.engine);
-    console.log("App::constructor(): Constructed.");
+    console.log("app::constructor(): Constructed.");
   }
 // -------------------------------------------------------------------------- //
   public run(): void {
     this.setup_document_event_listeners();
     this.setup_canvas();
 
+    let game_ui:ui = new ui(this.scene);
+    game_ui.create();
+    console.log(game_ui);
+
     // Enable physics
-    this.scene.enablePhysics(new Vector3(0,-10,0),
+    this.scene.enablePhysics(new Vector3(0, -10, 0),
       new CannonJSPlugin(true, 10, Cannon));
 
     let env:environment = new environment(this.scene);
     env.create();
 
-    let p:player = new player(this.scene);
+    let p:player = new player(this.scene, game_ui);
     p.create();
 
     // this.add_sphere(scene);
@@ -100,7 +105,7 @@ export class app {
   }
 // -------------------------------------------------------------------------- //
   private setup_canvas(): void {
-    console.log("App::create_canvas(): Setting up the document/body ...");
+    console.log("app::create_canvas(): Setting up the document/body ...");
     document.documentElement.style["overflow"] = "hidden";
     document.documentElement.style.overflow = "hidden";
     document.documentElement.style.width = "100%";
@@ -113,7 +118,7 @@ export class app {
     document.body.style.margin = "0px";
     document.body.style.padding = "0px";
 
-    console.log("App::create_canvas(): Setting up the canvas ...");
+    console.log("app::create_canvas(): Setting up the canvas ...");
     this.canvas.style.width = "100%";
     this.canvas.style.height = "100%";
     document.body.appendChild(this.canvas);
@@ -124,11 +129,11 @@ export class app {
     // stop context menu showing on canvas right click
     this.canvas.addEventListener("contextmenu", (e) => { e.preventDefault();});
 
-    console.log("App::create_canvas(): Done setting up the canvas.");
+    console.log("app::create_canvas(): Done setting up the canvas.");
   }
 // -------------------------------------------------------------------------- //
   private setup_document_event_listeners(): void {
-    console.log("App::setup_document_event_listeners(): Setting up the document"
+    console.log("app::setup_document_event_listeners(): Setting up the document"
       + " event listeners ...");
 
     // enable debugger / inspector
@@ -148,12 +153,12 @@ export class app {
       this.engine.resize();
     });
 
-    console.log("App::setup_document_event_listeners(): Done setting up the document event"
+    console.log("app::setup_document_event_listeners(): Done setting up the document event"
       + " listeners.");
   }
 // -------------------------------------------------------------------------- //
   private async async(): Promise<void> {
-    console.log("App::async(): Running async code.");
+    console.log("app::async(): Running async code.");
   }
 // -------------------------------------------------------------------------- //
   // private static add_gui_button()
@@ -234,6 +239,13 @@ export class app {
   //     true, false, undefined, false, true)!;
   //   return house;
   // }
+// -------------------------------------------------------------------------- //
+  // Remove all associated resources
+  dispose()
+  {
+    console.log("app::dispose(): Disposing...");
+    console.log("app::dispose(): Disposed.");
+  }
 // -------------------------------------------------------------------------- //
 } // end class
 // -------------------------------------------------------------------------- //

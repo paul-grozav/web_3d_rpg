@@ -2,10 +2,12 @@
 // Author: Tancredi-Paul Grozav <paul@grozav.info>
 // -------------------------------------------------------------------------- //
 import {Scene, ActionManager, ExecuteCodeAction, Scalar} from "babylonjs";
+import {ui} from "./ui"
 // -------------------------------------------------------------------------- //
 export class input_controller {
 // -------------------------------------------------------------------------- //
   private scene:Scene;
+  private game_ui:ui;
   public input_map:Record<string, boolean> = {};
 
   // simple movement - As we press the key, we want to lerp the value so that it
@@ -17,9 +19,10 @@ export class input_controller {
   public verticalAxis:number = 0;
   public is_jump_pressed:number = 0;
 // -------------------------------------------------------------------------- //
-  constructor(scene:Scene) {
+  constructor(scene:Scene, game_ui:ui) {
     console.log("input_controller::constructor(): Constructing...");
     this.scene = scene;
+    this.game_ui = game_ui;
     this.input_map = {};
     console.log("input_controller::constructor(): Constructed.");
   }
@@ -77,6 +80,29 @@ export class input_controller {
       this.is_jump_pressed = 1;
     } else {
       this.is_jump_pressed = 0;
+    }
+
+    // Process JoyStick input
+    // console.log("processing joystick...");
+    // console.log("IC::game_ui=");
+    // console.log(this.game_ui);
+    if(this.game_ui.get__is_joystick_active()){
+      let joystick = this.game_ui.get_joystick();
+      if(joystick === null || joystick === undefined){}
+      else{
+        let joystick_x = joystick.get_position_x();
+        let joystick_y = joystick.get_position_y();
+        console.log("js.x=" + joystick_x + " - js.y=" + joystick_y);
+        // moveX = leftJoystick.deltaPosition.x * (engine.getDeltaTime()/1000) * movespeed;
+        // moveZ = leftJoystick.deltaPosition.y * (engine.getDeltaTime()/1000) * movespeed;
+        // sphere.position.x+=moveX
+        // sphere.position.z+=moveZ
+        this.horizontal = Scalar.Lerp(this.horizontal, joystick_x, 0.01);
+        this.horizontalAxis = Math.sign(joystick_x);
+  
+        this.vertical = Scalar.Lerp(this.vertical, joystick_y, 0.01);
+        this.verticalAxis = Math.sign(joystick_y);
+      }
     }
   }
 // -------------------------------------------------------------------------- //

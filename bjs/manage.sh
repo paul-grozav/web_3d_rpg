@@ -2,6 +2,16 @@
 # ============================================================================ #
 # Author: Tancredi-Paul Grozav <paul@grozav.info>
 # ============================================================================ #
+# In the cloud edit:
+# $ KUBECONFIG=/data/h313/network/oracle/kubeconfig.yml kubectl run devel-w3r --image=docker.io/node:18.1.0-alpine3.15 --stdin --tty --rm=false -- /bin/sh
+# apk add openssh-client git nano bash
+# mkdir ~/.ssh
+# Add id_rsa and .pub
+# chmod a-rwx,u+rw ~/.ssh/*
+# git clone git@gitlab.com:tancredi-paul-grozav/web_3d_rpg.git /app
+# npm run start
+# KUBECONFIG=/data/h313/network/oracle/kubeconfig.yml kubectl port-forward pods/devel-w3r 2880:8080
+# KUBECONFIG=/data/h313/network/oracle/kubeconfig.yml kubectl exec devel-w3r --stdin --tty -- /bin/bash
 # ============================================================================ #
 
 

@@ -20,14 +20,17 @@ import {Scene, Vector3, MeshBuilder, FreeCamera, ArcRotateCamera,
   Space, Color3, Scalar}
   from "babylonjs";
 import {input_controller} from "./input_controller"
+import {ui} from "./ui"
 // -------------------------------------------------------------------------- //
 export class player {
 // -------------------------------------------------------------------------- //
   private scene:Scene;
+  private game_ui:ui;
 // -------------------------------------------------------------------------- //
-  constructor(scene:Scene) {
+  constructor(scene:Scene, game_ui:ui) {
     console.log("player::constructor(): Constructing...");
     this.scene = scene;
+    this.game_ui = game_ui;
     console.log("player::constructor(): Constructed.");
   }
 // -------------------------------------------------------------------------- //
@@ -80,7 +83,7 @@ export class player {
     //   0.2);
 
     console.log("player::create(): Creating input controller.");
-    let ic:input_controller = new input_controller(this.scene);
+    let ic:input_controller = new input_controller(this.scene, this.game_ui);
     ic.create();
 
     console.log("player::create(): Creating player ...");

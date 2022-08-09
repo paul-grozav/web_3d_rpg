@@ -62,6 +62,30 @@ export class environment {
       ground.scaling.z = 0.15;
     });
 
+    let add_tree = (position_x:number, position_z:number, name:string, color:Color3) => {
+      SceneLoader.Append("", "tree.glb", this.scene, function (scene) {
+        let obj:AbstractMesh = scene.getMeshByName("tree")!;
+        obj.name = name + "_tree";
+        obj.checkCollisions = true;
+        obj.position.x = position_x;
+        obj.position.z = position_z;
+        obj = scene.getMeshByName("leafs")!;
+        obj.name = name + "_leafs";
+        obj.checkCollisions = true;
+        obj.position.x = position_x;
+        obj.position.z = position_z;
+        const mat = new StandardMaterial("player_material");
+        mat.diffuseColor = color;
+        obj.material = mat;
+      });
+    };
+    const x:number = -10;
+    const y:number = -20;
+    add_tree(x + 0, y + 0, "1", Color3.Green());
+    add_tree(x + 0, y + 10, "2", Color3.Magenta());
+    add_tree(x + 10, y + 0, "3", Color3.Red());
+    add_tree(x + 10, y + 10, "4", Color3.Yellow());
+
     console.log("Environment::create(): Created.");
   }
 // -------------------------------------------------------------------------- //

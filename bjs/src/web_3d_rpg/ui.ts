@@ -1,6 +1,9 @@
 // -------------------------------------------------------------------------- //
 // Author: Tancredi-Paul Grozav <paul@grozav.info>
 // -------------------------------------------------------------------------- //
+// This will show the Game UI (User Interface) - including the menu, settings,
+// buttons, etc.
+// -------------------------------------------------------------------------- //
 import {Scene, VirtualJoystick} from "babylonjs";
 import * as BABYLON_GUI from "babylonjs-gui";
 import {joystick} from "./joystick"
@@ -19,9 +22,9 @@ export class ui {
 // -------------------------------------------------------------------------- //
   public create(): void {
     console.log("ui::create(): Creating...");
-    this.joystick = new joystick(this.scene);
     let advanced_texture = BABYLON_GUI.AdvancedDynamicTexture
       .CreateFullscreenUI("UI");
+    this.joystick = new joystick(this.scene, advanced_texture);
 
     let panel = new BABYLON_GUI.StackPanel("Game UI Panel");
     panel.height = "25px";

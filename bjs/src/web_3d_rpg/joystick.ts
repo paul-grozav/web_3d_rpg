@@ -8,7 +8,7 @@ import { Vector2 } from "babylonjs/index";
 export class joystick {
 // -------------------------------------------------------------------------- //
   private scene:Scene;
-  private adt:BABYLON_GUI.AdvancedDynamicTexture | null = null;
+  private adt:BABYLON_GUI.AdvancedDynamicTexture;
   private thumb_container:BABYLON_GUI.Ellipse | null = null;
   // This puck thing shows up while you press and hold the joystick, and it will
   // follow your cursor/thumb in any direction (2D plane)
@@ -19,15 +19,15 @@ export class joystick {
   private position_x:number = 0;
   private position_y:number = 0;
 // -------------------------------------------------------------------------- //
-  constructor(scene:Scene) {
+  constructor(scene:Scene, adt:BABYLON_GUI.AdvancedDynamicTexture) {
     console.log("joystick::constructor(): Constructing...");
     this.scene = scene;
+    this.adt = adt;
     console.log("joystick::constructor(): Constructed.");
   }
 // -------------------------------------------------------------------------- //
   public create(): void {
     console.log("joystick::create(): Creating...");
-    this.adt = BABYLON_GUI.AdvancedDynamicTexture.CreateFullscreenUI("UI");
 
     this.thumb_container = this.make_thumb_area("outer_ring", 2, "black", "");
     this.thumb_container.height = "200px";
@@ -107,10 +107,6 @@ export class joystick {
   // Used by custom joystick
   public remove() : void {
     console.log("joystick::create(): Removing.");
-    if(this.adt === null)
-    {
-      return;
-    }
     if(this.thumb_container === null)
     {
       return;
@@ -121,8 +117,7 @@ export class joystick {
 // -------------------------------------------------------------------------- //
   private down_handler(coordinates:Vector2): void {
     console.log("onPointerDown");
-    if(this.adt === null || this.thumb_container === null
-      || this.puck === null || this.adt === undefined
+    if(this.thumb_container === null || this.puck === null 
       || this.thumb_container === undefined || this.puck === undefined)
     {
       return;
@@ -143,8 +138,7 @@ export class joystick {
 // -------------------------------------------------------------------------- //
   private up_handler(coordinates:Vector2): void {
     console.log("onPointerUp");
-    if(this.adt === null || this.thumb_container === null
-      || this.puck === null || this.adt === undefined
+    if(this.thumb_container === null || this.puck === null 
       || this.thumb_container === undefined || this.puck === undefined)
     {
       return;
@@ -163,8 +157,7 @@ export class joystick {
       return;
     }
 
-    if(this.adt === null || this.thumb_container === null
-      || this.puck === null || this.adt === undefined
+    if(this.thumb_container === null || this.puck === null 
       || this.thumb_container === undefined || this.puck === undefined)
     {
       return;

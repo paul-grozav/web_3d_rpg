@@ -97,7 +97,7 @@ export class input_controller {
         // moveZ = leftJoystick.deltaPosition.y * (engine.getDeltaTime()/1000) * movespeed;
         // sphere.position.x+=moveX
         // sphere.position.z+=moveZ
-        this.horizontal = Scalar.Lerp(this.horizontal, joystick_x, 0.01);
+        this.horizontal = Scalar.Lerp(this.horizontal, Math.sign(joystick_y)*joystick_x, 0.01);
         this.horizontalAxis = Math.sign(joystick_x);
   
         this.vertical = Scalar.Lerp(this.vertical, joystick_y, 0.01);

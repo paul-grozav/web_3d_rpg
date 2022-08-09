@@ -50,6 +50,12 @@ export class player {
 
     const camera = new ArcRotateCamera("camera", 1/2 * Math.PI, Math.PI*3/10, 10, new Vector3(0, 0, 0));
     camera.upperBetaLimit = Math.PI / 2.2;
+    // maximum zoom-in - the minimum distance from the camera to the object
+    camera.lowerRadiusLimit = 5;
+    // maximum zoom-out - the maximum distance from the camera to the object
+    camera.upperRadiusLimit = 100;
+    // by default look from radius 20
+    camera.radius = 20;
     camera.position.z = 0;
 
     // This targets the camera to scene origin

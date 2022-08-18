@@ -26,6 +26,7 @@ should_debug=1 && # Uncomment to enable debugging
 script_dir="$( cd $( dirname ${0} ) && pwd )" &&
 build_container_name="typescript_compiler" &&
 cmgr="docker" &&
+cmgr="podman" &&
 # ============================================================================ #
 
 
@@ -67,7 +68,7 @@ function create_build_container()
     --name ${build_container_name} \
     --volume ${script_dir}:/app:rw \
     --entrypoint /bin/sh \
-    -p 0.0.0.0:1026:8080 \
+    -p 0.0.0.0:1028:8080 \
     docker.io/node:18.1.0-alpine3.15 \
     -c "
       cd /app &&
@@ -166,10 +167,7 @@ function build-inside()
 
   echo "Deploy html file ..." &&
   cp ${script_dir}/src/index.html ${script_dir}/build/index.html &&
-  if [ -f ${script_dir}/tmp_models/ground.glb ]
-  then
-    cp ${script_dir}/tmp_models/ground.glb ${script_dir}/build/
-  fi &&
+  cp ${script_dir}/models/*.glb ${script_dir}/build/ &&
 
   true
 } &&
@@ -215,6 +213,15 @@ function attach-env()
 # ============================================================================ #
 function start()
 {
+  # Create
+  if [ "$(is_build_container_created ; echo ${?})" == "1" ]
+  then
+    echo "Container exists"
+  else
+    echo "Container must be created" &&
+    create_build_container
+  fi &&
+
   ${cmgr} \
     exec \
     -it \

@@ -69,6 +69,7 @@ export class environment {
         obj.checkCollisions = true;
         obj.position.x = position_x;
         obj.position.z = position_z;
+        // obj.c
         obj = scene.getMeshByName("leafs")!;
         obj.name = name + "_leafs";
         obj.checkCollisions = true;

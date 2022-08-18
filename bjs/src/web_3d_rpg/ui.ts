@@ -65,6 +65,17 @@ export class ui {
     header.color = "white";
     panel.addControl(header);
 
+    let fps_header = new BABYLON_GUI.TextBlock();
+    fps_header.text = "FPS: 0";
+    fps_header.width = "80px";
+    fps_header.textHorizontalAlignment =
+      BABYLON_GUI.Control.HORIZONTAL_ALIGNMENT_LEFT;
+    fps_header.color = "white";
+    this.scene.onBeforeRenderObservable.add(() => {
+      fps_header.text = this.scene.getEngine().getFps().toFixed() + " FPS";
+    });
+    panel.addControl(fps_header);
+
     console.log("ui::create(): Created.");
   }
 // -------------------------------------------------------------------------- //

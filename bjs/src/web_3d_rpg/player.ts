@@ -17,7 +17,7 @@ import {Scene, Vector3, MeshBuilder, FreeCamera, ArcRotateCamera,
   SceneLoader,
   Axis,
   Tools,
-  Space, Color3, Scalar}
+  Space, Color3, Scalar, AbstractMesh, TransformNode}
   from "babylonjs";
 import {input_controller} from "./input_controller"
 import {ui} from "./ui"
@@ -56,6 +56,9 @@ export class player {
     camera.upperRadiusLimit = 100;
     // by default look from radius 20
     camera.radius = 20;
+
+    // How far away the camera can see
+    camera.collisionRadius = new Vector3(10, 10, 10);
     camera.position.z = 0;
 
     // This targets the camera to scene origin
@@ -66,25 +69,25 @@ export class player {
     // we'll use keyboard for character movement.
     camera.inputs.removeByType("ArcRotateCameraKeyboardMoveInput");
 
-    console.log("player::create(): Creating some tmp object around the player"
-      + " ...");
-    // Our built-in player'sphere' shape.
-    const sphere:Mesh = MeshBuilder.CreateSphere("sphere",
-      {diameter: 2, segments: 32}, this.scene);
-    // Move the sphere upward 1/2 its height
-    sphere.position.y = 1;
-    sphere.position.x = 7;
-    sphere.checkCollisions = true;
+    // console.log("player::create(): Creating some tmp object around the player"
+    //   + " ...");
+    // // Our built-in player'sphere' shape.
+    // const sphere:Mesh = MeshBuilder.CreateSphere("sphere",
+    //   {diameter: 2, segments: 32}, this.scene);
+    // // Move the sphere upward 1/2 its height
+    // sphere.position.y = 1;
+    // sphere.position.x = 7;
+    // sphere.checkCollisions = true;
 
     //collision mesh
     // const wire_mat = new StandardMaterial("wire_material");
     // wire_mat.wireframe = true;
-    const collision_box = MeshBuilder.CreateBox("collision_box", { width: 2,
-      depth: 2, height: 1 }, this.scene);
-    collision_box.checkCollisions = true;
-    // collision_box.material = wire_mat;
-    collision_box.position.z = -5;
-    collision_box.position.y = 0.5;
+    // const collision_box = MeshBuilder.CreateBox("collision_box", { width: 2,
+    //   depth: 2, height: 1 }, this.scene);
+    // collision_box.checkCollisions = true;
+    // // collision_box.material = wire_mat;
+    // collision_box.position.z = -5;
+    // collision_box.position.y = 0.5;
     // const physics_root = this.make_physics_object(collision_box, this.scene,
     //   0.2);
 
@@ -93,49 +96,46 @@ export class player {
     ic.create();
 
     console.log("player::create(): Creating player ...");
-    const player_mat = new StandardMaterial("player_material");
-    player_mat.diffuseColor = Color3.Blue();
-    const player = MeshBuilder.CreateBox("player", { width: 2,
-      depth: 2, height: 2 }, this.scene);
-    player.position.y = 1;
-    player.position.x = 0;
-    player.position.z = 0;
-    const player_arrow = MeshBuilder.CreateCylinder("player_ahead_arrow",
-      { diameterTop: 0, diameterBottom: 0.5, height: 0.5 }, this.scene);
-    player_arrow.position.y = 0.75;
-    player_arrow.position.z = -1.25;
-    player_arrow.rotation.x = -Math.PI/2;
-    player_arrow.parent = player;
-    player_arrow.checkCollisions = true;
-    player.material = player_mat;
-    camera.parent = player;
-    player.checkCollisions = true;
-    let jump_force = 0;
-    this.scene.registerBeforeRender(() => {
-      const position_step:number = 0.3;
-      const rotation_step:number = 0.015;
-      // Gravity direction points to -Y axis (thus, -1 *)
-      const gravity_force:number = -1 * 9.80665/5;
-      // player.movePOV(0, 0, ic.vertical*position_step); // moves without collision
-      player.rotation.y += ic.horizontal*rotation_step;
-      const move_x:number = -1 * Math.cos(player.rotation.y) * ic.vertical*position_step;
-      const move_z:number = -1 * Math.sin(player.rotation.y) * ic.vertical*position_step;
-      if(ic.is_jump_pressed && Math.round(player.position.y) == 1) {
-        jump_force = -1 * gravity_force + 0.2;
-      }
-      jump_force -= 0.01;
-      if(jump_force < 0){
-        jump_force = 0;
-      }
-      let move_y:number = gravity_force + jump_force;
-      // console.log("move_y=" + move_y);
-      // console.log("player.position.y=" + player.position.y);
-      // console.log("jump_force=" + jump_force);
-      player.moveWithCollisions(new Vector3(move_z, move_y, move_x));
-      if(player.position.y < 1){
-        player.position.y = 1;
-      }
-});
+    let player:Mesh;
+    SceneLoader.Append("", "human_body.glb", this.scene, function (scene) {
+      player = (scene.getMeshByName("Human")!.parent! as Mesh);
+      player.name = "player";
+      player.scaling.z = 1;
+      player.rotationQuaternion = null;
+      scene.getMeshByName("Human")!.rotation.y=0;
+      player.checkCollisions = true;
+      camera.parent = player;
+
+      let jump_force = 0;
+      scene.registerBeforeRender(() => {
+        const position_step:number = 0.3;
+        const rotation_step:number = 0.015;
+        // Gravity direction points to -Y axis (thus, -1 *)
+        const gravity_force:number = -1 * 9.80665/5;
+        // player.movePOV(0, 0, ic.vertical*position_step); // moves without collision
+        player.rotation.y += ic.horizontal*rotation_step;
+        const move_x:number = -1 * Math.cos(player.rotation.y) * ic.vertical*position_step;
+        const move_z:number = -1 * Math.sin(player.rotation.y) * ic.vertical*position_step;
+        if(ic.is_jump_pressed && Math.round(player.position.y) == 1) {
+          jump_force = -1 * gravity_force + 0.2;
+        }
+        jump_force -= 0.01;
+        if(jump_force < 0){
+          jump_force = 0;
+        }
+        let move_y:number = gravity_force + jump_force;
+        // console.log("move_y=" + move_y);
+        // console.log("player.position.y=" + player.position.y);
+        // console.log("jump_force=" + jump_force);
+        player.moveWithCollisions(new Vector3(move_z, move_y, move_x));
+        // player.position.x += move_x;
+        // player.position.y += move_y;
+        // player.position.z += move_z;
+        if(player.position.y < 1){
+          player.position.y = 1;
+        }
+      });
+    });
 
 
 

@@ -108,6 +108,9 @@ export class player {
 
       let jump_force = 0;
       scene.registerBeforeRender(() => {
+        // the amount of time in between frames (ms), so we divide by 1000 to get seconds
+        // let delta_time = scene.getEngine().getDeltaTime() / 1000.0;
+        // console.log("delta_time=" + delta_time);
         const position_step:number = 0.3;
         const rotation_step:number = 0.015;
         // Gravity direction points to -Y axis (thus, -1 *)
@@ -127,7 +130,8 @@ export class player {
         // console.log("move_y=" + move_y);
         // console.log("player.position.y=" + player.position.y);
         // console.log("jump_force=" + jump_force);
-        player.moveWithCollisions(new Vector3(move_z, move_y, move_x));
+        let move_vec:Vector3 = new Vector3(move_z, move_y, move_x);
+        player.moveWithCollisions(move_vec);
         // player.position.x += move_x;
         // player.position.y += move_y;
         // player.position.z += move_z;

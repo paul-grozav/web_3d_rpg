@@ -36,6 +36,7 @@ export class player {
   private _inputAmt: number = 0;
   private static readonly PLAYER_SPEED: number = 0.45;
   private static readonly JUMP_FORCE: number = 0.80;
+  private static readonly ABOVE_GROUND_DISTANCE:number = 0.1;
   private static readonly GRAVITY: number = -2.8;
   private _gravity: Vector3 = new Vector3();
   private _grounded: boolean = false;
@@ -123,7 +124,7 @@ export class player {
       this.mesh = (this.scene.getMeshByName("Human")!.parent! as Mesh);
       this.mesh.name = "player";
       this.mesh.scaling.z = 1;
-      this.mesh.position.y = 0.1;
+      this.mesh.position.y = player.ABOVE_GROUND_DISTANCE;
       // this.mesh.position.x = 145;
       // this.mesh.position.z = 145;
       this.mesh.rotationQuaternion = null;
@@ -361,7 +362,7 @@ export class player {
 
     //update our movement to account for jumping
     let movement_vector = this._moveDirection.addInPlace(this._gravity);
-    console.log(this.mesh.position.y, is_grounded, this._gravity.y, this._moveDirection.y);
+    // console.log(this.mesh.position.y, is_grounded, this._gravity.y, this._moveDirection.y);
     // console.log(movement_vector.y, this.mesh.position.y);
     this.mesh.moveWithCollisions(movement_vector);
     // this.mesh.position.y = this._lastGroundPos.y;
@@ -422,7 +423,9 @@ export class player {
   }
 // -------------------------------------------------------------------------- //
   private _isGrounded(): boolean {
-    if (this._floorRaycast(0, 0, 1.5).length() == 0){//.equals(Vector3.Zero())) {
+    let acceptable_distance:number = player.ABOVE_GROUND_DISTANCE;
+    acceptable_distance = 1.5;
+    if (this._floorRaycast(0, 0, acceptable_distance).length() == 0){//.equals(Vector3.Zero())) {
       return false;
     } else {
       return true;

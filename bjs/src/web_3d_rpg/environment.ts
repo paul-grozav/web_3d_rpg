@@ -58,6 +58,7 @@ export class environment {
     SceneLoader.Append("", "ground.glb", this.scene, function (scene) {
       const ground:AbstractMesh = scene.getMeshByName("Plane")!;
       ground.checkCollisions = true;
+      // ground.position.y = -1;
       ground.scaling.x = 0.15;
       ground.scaling.z = 0.15;
     });

@@ -27,7 +27,7 @@ jobs:
   # Build job
   build:
     # runs-on: self-hosted
-    runs-on: ubuntu-latest  # Uses a free GitHub runner
+    runs-on: ubuntu-latest # Uses a free GitHub runner
     container:
       image: docker.io/node:18.1.0-alpine3.15
     steps:
@@ -56,17 +56,16 @@ jobs:
         true
     - name: Upload static files as artifact
       id: deployment
-      uses: actions/upload-pages-artifact@v3 # or specific "vX.X.X" version tag for this action
+      uses: actions/upload-pages-artifact@v3
       with:
         path: bjs/build
-        # compression-level: 0  # Try disabling compression
         retention-days: 1
   # Deployment job
   deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: docker.io/alpine:3.21.3
+    runs-on: ubuntu-latest # Uses a free GitHub runner
     needs: build
     steps:
     - name: Deploy to GitHub Pages

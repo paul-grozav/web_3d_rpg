@@ -59,6 +59,7 @@ jobs:
       uses: actions/upload-pages-artifact@v3 # or specific "vX.X.X" version tag for this action
       with:
         path: bjs/build
+        compression-level: 0  # Try disabling compression
         retention-days: 1
   # Deployment job
   deploy:

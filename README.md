@@ -1,6 +1,6 @@
 # web_3d_rpg
 
-
+Run app by loading this URL: https://paul-grozav.github.io/web_3d_rpg/ .
 
 ## Getting started
 

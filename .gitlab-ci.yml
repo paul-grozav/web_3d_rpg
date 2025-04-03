@@ -1,24 +1,24 @@
-stages:
-- build
-- deploy
+# stages:
+# - build
+# - deploy
 
-build-job:
-  stage: build
-  image: docker.io/node:18.1.0-alpine3.15
-  script:
-  - /bin/sh -c "ls -la && pwd && cd bjs && ls -la && apk add bash && ./manage.sh --build-inside"
-  artifacts:
-    paths:
-    - bjs/build
-    expire_in: 1 hour
+# build-job:
+#   stage: build
+#   image: docker.io/node:18.1.0-alpine3.15
+#   script:
+#   - /bin/sh -c "ls -la && pwd && cd bjs && ls -la && apk add bash && ./manage.sh --build-inside"
+#   artifacts:
+#     paths:
+#     - bjs/build
+#     expire_in: 1 hour
 
-pages:
-  stage: deploy
-  needs:
-  - build-job
-  script:
-  - mv bjs/build public
-  artifacts:
-    paths:
-    - public
-    expire_in: 1 hour
+# pages:
+#   stage: deploy
+#   needs:
+#   - build-job
+#   script:
+#   - mv bjs/build public
+#   artifacts:
+#     paths:
+#     - public
+#     expire_in: 1 hour

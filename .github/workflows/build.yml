@@ -49,15 +49,14 @@ jobs:
         echo "---" &&
         ls -la &&
         echo "---" &&
-        apk add bash &&
+        apk add --no-cache tar bash &&
         echo "---" &&
         ./manage.sh --build-inside &&
         echo "---" &&
         true
     - name: Upload static files as artifact
       id: deployment
-      # uses: actions/upload-pages-artifact@v3 # or specific "vX.X.X" version tag for this action
-      uses: actions/upload-pages-artifact@v3
+      uses: actions/upload-pages-artifact@v3 # or specific "vX.X.X" version tag for this action
       with:
         path: bjs/build
         # compression-level: 0  # Try disabling compression

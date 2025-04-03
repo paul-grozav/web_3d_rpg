@@ -27,8 +27,9 @@ jobs:
   # Build job
   build:
     # runs-on: self-hosted
-    container:
-      image: docker.io/node:18.1.0-alpine3.15
+    runs-on: docker.io/node:18.1.0-alpine3.15
+    # container:
+    #   image: docker.io/node:18.1.0-alpine3.15
     steps:
     - name: Checkout
       uses: actions/checkout@v4
